@@ -7,7 +7,7 @@ library(purrr)
 sink("log_get_new_subs.txt")
 setwd("/home/fripi/mailchimp-welcomemail")
 
-# setwd("/home/frie/Documents/correlaid_my/mailchimp/")
+# setwd("/home/frie/Documents/correlaid/codes_and_presentations/mailchimp-welcomemail/")
 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
 # read in the date for which we last checked new subscribers, i.e. the day before the script was last run
@@ -34,7 +34,7 @@ mc <- read.csv("mcapi.txt", sep = ",", strip.white = T)
 # }
 # 
 
-# delete the old sendto file 
+# delete the old sendto file
 tmpfile <- list.files(pattern = "sendto.+?\\.csv")
 if (length(tmpfile) > 0) file.remove(tmpfile)
 
@@ -73,7 +73,6 @@ sendto <- sendto[, str_detect(colnames(sendto), "[Ee]mail|[Vv]orname|Kontaktspra
 colnames(sendto) <- c("email", "vorname", "kontaktsprache")
 
 write.csv(sendto, file = paste("sendto_", Sys.Date(), ".csv", sep = ""), row.names = F)
-
 
 # # get the new email addresses 
 # new_indizes <- which(!current[, str_detect(colnames(current), "[Ee]mail")] %in% old[, str_detect(colnames(old), "[Ee]mail")])

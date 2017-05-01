@@ -1,0 +1,17 @@
+# r files
+.RData
+.RHistory
+
+# login data for email
+maillogin.txt
+
+# api info
+mcapi.txt
+
+# send to
+sendto_*
+
+# log files
+log_get_new_subs.txt
+log_send_mails.txt
+
