@@ -102,7 +102,7 @@ with open(filename, "r") as newfile, open("sent_total.csv", "a+") as allsent:
         msg['To'] = row[0]
         msg['From'] = emaild['from']
 
-        # server.sendmail(emaild['usr'], row[0], msg.as_string())
+        server.sendmail(emaild['usr'], row[0], msg.as_string())
         todaystr = str(now.year) + "-" + month_str + "-" + day_str
         writer.writerow([row[0], row[1], row[2], todaystr])
         print("sent email to " + row[1] + " (" + row[0] + ")")
