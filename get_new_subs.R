@@ -5,9 +5,9 @@ library(jsonlite)
 library(purrr)
 
 sink("log_get_new_subs.txt")
-setwd("/home/fripi/mailchimp-welcomemail")
+# setwd("/home/fripi/mailchimp-welcomemail")
 
-# setwd("/home/frie/Documents/correlaid/codes_and_presentations/mailchimp-welcomemail/")
+setwd("/home/frie/Documents/correlaid/codes_and_presentations/mailchimp-welcomemail/")
 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
 # read in the date for which we last checked new subscribers, i.e. the day before the script was last run
@@ -61,10 +61,16 @@ objs <- purrr::map(js, jsonlite::fromJSON)
 # convert to data frame 
 current <- plyr::ldply(objs)
 colnames(current) <- current[1, ] # first row are column names
-current <- current[2:nrow(current), str_detect(colnames(current), "[Ee]mail|[Vv]orname|CONFIRM_TIME|Kontaktsprache")] # delete first row and keep only email and first name
+current <- current[2:nrow(current), ] # delete first row and keep only email and first name
 
 # confirm day
 current$confirm_date <- as.Date(current$CONFIRM_TIME)
+
+# write to external file 
+write.csv(current, "current_subscribers.csv", row.names = F)
+
+# only keep relevant variables
+current <- current[, str_detect(colnames(current), "[Ee]mail|[Vv]orname|CONFIRM_TIME|Kontaktsprache")]
 
 # all accounts with confirm date >= from_day and <= upto_day should be sent an email to
 sendto <- current[current$confirm_date >= from_day & current$confirm_date <= upto_day, ]
