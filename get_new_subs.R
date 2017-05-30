@@ -3,12 +3,19 @@ library(httr)
 library(stringr) 
 library(jsonlite)
 library(purrr)
+library(RMySQL)
+library(RCurl)
+library(jsonlite)
+
 
 sink("log_get_new_subs.txt")
-# setwd("/home/fripi/mailchimp-welcomemail")
 
+# 0. SETUP
+# 0.1. working directory
+# setwd("/home/fripi/mailchimp-welcomemail")
 setwd("/home/frie/Documents/correlaid/codes_and_presentations/mailchimp-welcomemail/")
 
+# 0.2. define timeframe 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
 # read in the date for which we last checked new subscribers, i.e. the day before the script was last run
 from_day <- as.Date(readLines("lastrun"))
@@ -16,40 +23,30 @@ from_day <- as.Date(readLines("lastrun"))
 # we want to include people up to yesterday 
 upto_day <- Sys.Date() - 1
 
-# overwrite lastrun
+# 0.3. overwrite lastrun
 fileConn<-file("lastrun")
 writeLines(as.character(Sys.Date()), fileConn)
 close(fileConn)
 
-# read in mailchimp data (api key etc)
-mc <- read.csv("mcapi.txt", sep = ",", strip.white = T)
-
-# # read old data
-# currentfile <- list.files(pattern = "current_.+?\\.csv")
-# 
-# if (length(currentfile) == 1){
-#   # can read in data 
-#   old <- read.csv(currentfile, stringsAsFactors = F)
-#   file.remove(currentfile)
-# }
-# 
-
-# delete the old sendto file
+# 0.4. delete the old sendto file
 tmpfile <- list.files(pattern = "sendto.+?\\.csv")
 if (length(tmpfile) > 0) file.remove(tmpfile)
 
-# get the  data 
+# 1. MAILCHIMP
+# 1.1. read in mailchimp data (api key etc)
+mc <- read.csv("mcapi.txt", sep = ",", strip.white = T)
+
+# 1.2. get the  data 
 mcurl <- paste("https://", mc$apitype, ".api.mailchimp.com/export/1.0/list/?id=", 
              mc$listid, "&apikey=", mc$apikey, sep="")
 
 req <- GET(url = mcurl)
-
 rm(mc) # remove mc object
 
+# 2. DATA CLEANING 
 # parse the content 
-j <- content(req, "text")
-
-js <- str_split(j, "\n")
+j <- content(req, "text") 
+js <- str_split(j, "\n") # unpack lines
 
 # delete empty entries
 js <- unlist(js)
@@ -63,15 +60,13 @@ current <- plyr::ldply(objs)
 colnames(current) <- current[1, ] # first row are column names
 current <- current[2:nrow(current), ] # delete first row and keep only email and first name
 
-# confirm day
+# confirm day as date
 current$confirm_date <- as.Date(current$CONFIRM_TIME)
-
-# write to external file 
-write.csv(current, "current_subscribers.csv", row.names = F)
 
 # only keep relevant variables
 current <- current[, str_detect(colnames(current), "[Ee]mail|[Vv]orname|CONFIRM_TIME|Kontaktsprache")]
 
+# 3. SUBSET FOR NEW SUBSCRIBERS 
 # all accounts with confirm date >= from_day and <= upto_day should be sent an email to
 sendto <- current[current$confirm_date >= from_day & current$confirm_date <= upto_day, ]
 
@@ -80,11 +75,25 @@ colnames(sendto) <- c("email", "vorname", "kontaktsprache")
 
 write.csv(sendto, file = paste("sendto_", Sys.Date(), ".csv", sep = ""), row.names = F)
 
-# # get the new email addresses 
-# new_indizes <- which(!current[, str_detect(colnames(current), "[Ee]mail")] %in% old[, str_detect(colnames(old), "[Ee]mail")])
-# new <- current[new_indizes, ]
-#  
-# write.csv(current, file = paste("current_", Sys.Date(), ".csv", sep = ""), row.names = F)
-# write.csv(new, file = paste("new_", Sys.Date(), ".csv", sep = ""), row.names = F)
-# 
+# 4. ADD NEW SUBSCRIBER VALUE TO FTP CONNECTION
+
+# load r file
+load("newsletter.rda")
+
+# add todays value
+x <- nrow(current)
+newsletter <- rbind(newsletter, c(as.character(Sys.Date()), x))
+
+# save r file
+save(newsletter, file = "newsletter.rda")
+
+# save json
+json <- toJSON(newsletter)
+write(json, file = "newsletter.json")
+
+
+# upload to server
+ftpUpload(what = "newsletter.json",
+          to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/newsletter.json")
+rm(list = ls())
 sink()
