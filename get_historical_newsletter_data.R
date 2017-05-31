@@ -22,4 +22,5 @@ count_subs <- function(row){
 # apply to all days / rows
 alldays <- by_row(.d = alldays, ..f = count_subs, .collate = "cols", .to = "subs")
 
-write.csv(alldays, "historical_newsletter_data.csv", row.names = F)
+file.remove("current_subscribers.csv")
+write.csv(alldays, "newsletter_data/historical_newsletter_data.csv", row.names = TRUE)
