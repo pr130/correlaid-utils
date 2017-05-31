@@ -3,7 +3,6 @@ library(httr)
 library(stringr) 
 library(jsonlite)
 library(purrr)
-library(RMySQL)
 library(RCurl)
 library(jsonlite)
 
@@ -12,8 +11,12 @@ sink("log_get_new_subs.txt")
 
 # 0. SETUP
 # 0.1. working directory
-# setwd("/home/fripi/mailchimp-welcomemail")
-setwd("/home/frie/Documents/correlaid/codes_and_presentations/mailchimp-welcomemail/")
+# set dynamically based on user 
+if(Sys.info()[["user"]] == "frie"){
+  setwd("/home/frie/Documents/correlaid/codes_and_presentations/mailchimp-welcomemail/")
+} else if(Sys.info()[["user"]] == "fripi"){
+  setwd("/home/fripi/mailchimp-welcomemail")
+}
 
 # 0.2. define timeframe 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
@@ -82,7 +85,7 @@ load("newsletter.rda")
 
 # add todays value
 x <- nrow(current)
-newsletter <- rbind(newsletter, c(as.character(Sys.Date()), x))
+newsletter <- rbind(newsletter, c(as.character(Sys.Date() - 1), x))
 
 # save r file
 save(newsletter, file = "newsletter.rda")
