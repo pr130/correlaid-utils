@@ -5,6 +5,7 @@ library(RCurl)
 library(stringr) 
 library(purrr)
 library(dplyr)
+library(Rfacebook)
 rm(list = ls())
 
 # 0. SETUP
@@ -27,7 +28,7 @@ correlaid <- getUser("CorrelAid")
 fc <- followersCount(correlaid)
 
 
-# 1.2. UPLOAD TO FTP
+# 1.2. add to old file
 # load r file
 load("twitter_data/twitter_daily.rda")
 
@@ -39,7 +40,7 @@ twitter <- unique(twitter)
 save(twitter, file = "twitter_data/twitter_daily.rda")
 
 # save json
-json <- toJSON(twitter)
+json <- jsonlite::toJSON(twitter)
 write(json, file = "twitter_data/twitter_daily.json")
 
 # 2. NEWSLETTER
@@ -81,12 +82,77 @@ newsletter <- rbind(newsletter, c(as.character(Sys.Date()), sc))
 newsletter <- unique(newsletter)
 
 # write to file
-save(newsletter, file = "aux_data/newsletter_daily.rda")
+save(newsletter, file = "newsletter_data/newsletter_daily.rda")
 
-json <- toJSON(newsletter)
+json <- jsonlite::toJSON(newsletter)
 write(json, file = "newsletter_data/newsletter_daily.json")
 
-# 3. UPLOAD WEEKLY
+# 3. FACEBOOK
+
+# 3.0. read in old data and app data
+load("facebook_data/facebook_daily.rda")
+fb_creds <- read.csv("aux_data/facebook_credentials", stringsAsFactors = F)
+
+# 3.1. authentification and function definition
+# authentification was done following http://thinktostart.com/analyzing-facebook-with-r/
+# uncomment to execute only once every two months (that's how long the token is valid)
+# fb_oauth <- fbOAuth(app_id=fb_creds$appid, app_secret=fb_creds$appsecret, scope="manage_pages")
+# save(fb_oauth, file="aux_data/fb_oauth")
+load("aux_data/fb_oauth")
+
+coll_data <- function(object){
+  json <- jsonlite::toJSON(object)
+  dflist <- jsonlite::fromJSON(json)$data$values # get data frame
+  return(dflist)
+}
+
+# 3.2. create list of dataframes and initial call
+dataframes <- list()
+tmp <- callAPI("https://graph.facebook.com/WeAreCorrelAid/insights/page_fans", token = fb_oauth)
+
+# 3.3. pagination
+
+# paginate forward (that's where the newest data is)
+nextlink <- tmp$paging$`next`
+current <- tmp
+
+while(!is.null(nextlink)){
+  print(nextlink)
+  current <- callAPI(nextlink, token = fb_oauth)
+  
+  df <- coll_data(current) # get list with data frame
+  count_mean <- mean(unlist(df[[1]]$value)) # calculate mean
+  dataframes <- c(dataframes, df) # add data frame to list of dataframes
+  nextlink <- current$paging$`next` # update prevlink
+}
+
+facebook_new <- bind_rows(dataframes)
+
+# 3.4. data cleaning and saving
+# unlist list columns
+facebook_new$end_time <- unlist(facebook_new$end_time)
+facebook_new$value <- unlist(facebook_new$value)
+
+# date
+facebook_new$date <- as.Date(facebook_new$end_time, "%Y-%m-%dT%H:%M:%S%z")
+facebook_new$date <- facebook_new$date - 1 # end time is midnight of the day (which is displayed as 00:00 of the next day)
+facebook_new$end_time <- NULL
+
+# arrange variables and colnames
+facebook_new <- facebook_new %>% 
+  select(x = date, y = value)
+
+# bind the new rows
+facebook <- rbind(facebook, facebook_new[!facebook_new$x %in% facebook$x, ])
+
+# write to file
+save(facebook, file = "facebook_data/facebook_daily.rda")
+
+json <- jsonlite::toJSON(facebook)
+write(json, file = "facebook_data/facebook_daily.json")
+
+
+# 4. UPLOAD WEEKLY
 # read in days 
 dates <- seq(from = as.Date("2016-02-29"), Sys.Date(), by = "weeks")
 
@@ -101,16 +167,22 @@ if ((max(dates) + 7) == Sys.Date()){
   # twitter_weekly
   twitter_weekly <- twitter$y[as.numeric(as.Date(twitter$x)) %in% dates]
   
+  facebook_weekly <- facebook$y[as.numeric(as.Date(facebook$x)) %in% dates] 
+  
   # save json
   # days
-  json <- toJSON(format(as.Date(dates), format="%b %d, %Y"))
+  json <- jsonlite::toJSON(format(as.Date(dates), format="%b %d, %Y"))
   writeBin(charToRaw(json), con = "days.json", endian = "little")
   
-  json <- toJSON(newsletter_weekly)
+  json <- jsonlite::toJSON(newsletter_weekly)
   writeBin(charToRaw(json), con = "newsletter_data/newsletter_weekly.json", endian = "little")
   
-  json <- toJSON(twitter_weekly)
+  json <- jsonlite::toJSON(twitter_weekly)
   writeBin(charToRaw(json), con = "twitter_data/twitter_weekly.json", endian = "little")
+  
+  
+  json <- jsonlite::toJSON(facebook_weekly)
+  writeBin(charToRaw(json), con = "facebook_data/facebook_weekly.json", endian = "little")
   
   # upload to server
   ftpUpload(what = "days.json",
@@ -121,5 +193,8 @@ if ((max(dates) + 7) == Sys.Date()){
   
   ftpUpload(what = "twitter_data/twitter_weekly.json",
             to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/twitter.json")
+  
+  ftpUpload(what = "facebook_data/facebook_weekly.json",
+            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/facebook.json")
   
   }
