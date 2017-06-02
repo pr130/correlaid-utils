@@ -7,6 +7,10 @@ mailchimp-welcomemail/aux_data/maillogin.txt
 
 # api info
 mailchimp-welcomemail/aux_data/mcapi.txt
+correlaid-analytics/aux_data/mcapi.txt
+
+# twitter credentials
+correlaid-analytics/aux_data/twitter_credentials
 
 # send to
 mailchimp-welcomemail/sendto_*
