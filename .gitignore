@@ -1,17 +1,17 @@
 # r files
-.RData
-.RHistory
+mailchimp-welcomemail/.RData
+mailchimp-welcomemail/.RHistory
 
 # login data for email
-maillogin.txt
+mailchimp-welcomemail/aux_data/maillogin.txt
 
 # api info
-mcapi.txt
+mailchimp-welcomemail/aux_data/mcapi.txt
 
 # send to
-sendto_*
+mailchimp-welcomemail/sendto_*
 
 # log files
-log_get_new_subs.txt
-log_send_mails.txt
+mailchimp-welcomemail/logs/log_get_new_subs.txt
+mailchimp-welcomemail/logs/log_send_mails.txt
 
