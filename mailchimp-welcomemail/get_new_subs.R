@@ -77,24 +77,5 @@ colnames(sendto) <- c("email", "vorname", "kontaktsprache")
 
 write.csv(sendto, file = paste("sendto_", Sys.Date(), ".csv", sep = ""), row.names = F)
 
-# 4. ADD NEW SUBSCRIBER VALUE TO FTP CONNECTION
-# load r file
-load("newsletter_data/newsletter_daily.rda")
-
-# add todays value
-x <- nrow(current)
-newsletter <- rbind(newsletter, c(as.character(Sys.Date() - 1), x))
-newsletter <- unique(newsletter)
-
-# save r file
-save(newsletter, file = "newsletter_data/newsletter_daily.rda")
-
-json_daily <- toJSON(newsletter)
-write(json_daily, file = "newsletter_data/newsletter_daily.json")
-
-# upload to server
-ftpUpload(what = "newsletter_data/newsletter_daily.json",
-          to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/newsletter_daily.json")
-
 rm(list = ls())
 sink()
