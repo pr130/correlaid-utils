@@ -12,6 +12,8 @@ correlaid-analytics/aux_data/mcapi.txt
 # twitter credentials
 correlaid-analytics/aux_data/twitter_credentials
 
+# fb oauth
+correlaid-analytics/aux_data/fb_oauth
 # send to
 mailchimp-welcomemail/sendto_*
 
