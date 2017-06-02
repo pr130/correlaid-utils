@@ -89,13 +89,14 @@ write(json, file = "newsletter_data/newsletter_daily.json")
 
 # 3. FACEBOOK
 
-# 3.0. read in old data
+# 3.0. read in old data and app data
 load("facebook_data/facebook_daily.rda")
+fb_creds <- read.csv("aux_data/facebook_credentials", stringsAsFactors = F)
 
 # 3.1. authentification and function definition
 # authentification was done following http://thinktostart.com/analyzing-facebook-with-r/
 # uncomment to execute only once every two months (that's how long the token is valid)
-# fb_oauth <- fbOAuth(app_id="1888833184724735", app_secret="2ee6aeb6ad76a20846ba1cc0e15ac113", scope="manage_pages")
+# fb_oauth <- fbOAuth(app_id=fb_creds$appid, app_secret=fb_creds$appsecret, scope="manage_pages")
 # save(fb_oauth, file="aux_data/fb_oauth")
 load("aux_data/fb_oauth")
 
