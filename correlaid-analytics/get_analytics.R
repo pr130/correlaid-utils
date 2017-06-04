@@ -74,6 +74,9 @@ current <- plyr::ldply(objs)
 colnames(current) <- current[1, ] # first row are column names
 current <- current[2:nrow(current), ] # delete first row and keep only email and first name
 
+# empty strings as NA
+current[current == ""] <- NA
+
 # subscriber count
 sc <- nrow(current)
 
@@ -144,13 +147,13 @@ facebook_new <- facebook_new %>%
 
 # bind the new rows
 facebook <- rbind(facebook, facebook_new[!facebook_new$x %in% facebook$x, ])
+facebook <- unique(facebook)
 
 # write to file
 save(facebook, file = "facebook_data/facebook_daily.rda")
 
 json <- jsonlite::toJSON(facebook)
 write(json, file = "facebook_data/facebook_daily.json")
-
 
 # 4. UPLOAD WEEKLY
 # read in days 
@@ -167,6 +170,7 @@ if ((max(dates) + 7) == Sys.Date()){
   # twitter_weekly
   twitter_weekly <- twitter$y[as.numeric(as.Date(twitter$x)) %in% dates]
   
+  # facebook weekly
   facebook_weekly <- facebook$y[as.numeric(as.Date(facebook$x)) %in% dates] 
   
   # save json
@@ -174,27 +178,35 @@ if ((max(dates) + 7) == Sys.Date()){
   json <- jsonlite::toJSON(format(as.Date(dates), format="%b %d, %Y"))
   writeBin(charToRaw(json), con = "days.json", endian = "little")
   
-  json <- jsonlite::toJSON(newsletter_weekly)
-  writeBin(charToRaw(json), con = "newsletter_data/newsletter_weekly.json", endian = "little")
+  # all the data together
+  all <- list(twitter = twitter_weekly, facebook = facebook_weekly, newsletter = newsletter_weekly)
+  json <- jsonlite::toJSON(all)
+  writeBin(charToRaw(json), con = "all_weekly.json", endian = "little")
   
-  json <- jsonlite::toJSON(twitter_weekly)
-  writeBin(charToRaw(json), con = "twitter_data/twitter_weekly.json", endian = "little")
-  
-  
-  json <- jsonlite::toJSON(facebook_weekly)
-  writeBin(charToRaw(json), con = "facebook_data/facebook_weekly.json", endian = "little")
+  # json <- jsonlite::toJSON(newsletter_weekly)
+  # writeBin(charToRaw(json), con = "newsletter_data/newsletter_weekly.json", endian = "little")
+  # 
+  # json <- jsonlite::toJSON(twitter_weekly)
+  # writeBin(charToRaw(json), con = "twitter_data/twitter_weekly.json", endian = "little")
+  # 
+  # 
+  # json <- jsonlite::toJSON(facebook_weekly)
+  # writeBin(charToRaw(json), con = "facebook_data/facebook_weekly.json", endian = "little")
   
   # upload to server
   ftpUpload(what = "days.json",
             to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/days.json")
+
+  ftpUpload(what = "all_weekly.json",
+            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/all_weekly.json")
   
-  ftpUpload(what = "newsletter_data/newsletter_weekly.json",
-            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/newsletter.json")
-  
-  ftpUpload(what = "twitter_data/twitter_weekly.json",
-            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/twitter.json")
-  
-  ftpUpload(what = "facebook_data/facebook_weekly.json",
-            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/facebook.json")
+  # ftpUpload(what = "newsletter_data/newsletter_weekly.json",
+  #           to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/newsletter.json")
+  # 
+  # ftpUpload(what = "twitter_data/twitter_weekly.json",
+  #           to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/twitter.json")
+  # 
+  # ftpUpload(what = "facebook_data/facebook_weekly.json",
+  #           to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/facebook.json")
   
   }
