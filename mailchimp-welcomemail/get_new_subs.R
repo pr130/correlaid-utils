@@ -6,8 +6,6 @@ library(RCurl)
 library(jsonlite)
 library(dplyr)
 
-sink("logs/log_get_new_subs.txt")
-
 # 0. SETUP
 # 0.1. working directory
 # set dynamically based on user 
@@ -16,6 +14,8 @@ if(Sys.info()[["user"]] == "frie"){
 } else if(Sys.info()[["user"]] == "fripi"){
   setwd("/home/fripi/correlaid/correlaid-utils/mailchimp-welcomemail")
 }
+
+sink("logs/log_get_new_subs.txt") 
 
 # 0.2. define timeframe 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
