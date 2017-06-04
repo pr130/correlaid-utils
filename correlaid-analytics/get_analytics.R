@@ -168,7 +168,10 @@ if ((max(dates) + 7) == Sys.Date()){
   newsletter_weekly <- newsletter$y[as.numeric(as.Date(newsletter$x)) %in% dates]
 
   # twitter_weekly
-  twitter_weekly <- twitter$y[as.numeric(as.Date(twitter$x)) %in% dates]
+  twitter_weekly <- fromJSON(file = "twitter_data/twitter_weekly.json")
+  twitter_weekly <- c(twitter_weekly, twitter$y[twitter$x == Sys.Date()])
+  # twitter_weekly <- twitter$y[as.numeric(as.Date(twitter$x)) %in% dates]
+  writeBin(charToRaw(json), con = "twitter_weekly.json", endian = "little")
   
   # facebook weekly
   facebook_weekly <- facebook$y[as.numeric(as.Date(facebook$x)) %in% dates] 
@@ -190,7 +193,8 @@ if ((max(dates) + 7) == Sys.Date()){
   # writeBin(charToRaw(json), con = "twitter_data/twitter_weekly.json", endian = "little")
   # 
   # 
-  # json <- jsonlite::toJSON(facebook_weekly)
+  # json <- jsonlite::toJSON(facebook_weekly)  writeBin(charToRaw(json), con = "days.json", endian = "little")
+
   # writeBin(charToRaw(json), con = "facebook_data/facebook_weekly.json", endian = "little")
   
   # upload to server
