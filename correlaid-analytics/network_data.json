@@ -1,0 +1,62 @@
+{
+  "en": {
+    "gender": {
+      "labels": ["Male", "Female", "Don't want to say/define it this way"],
+      "values": [66, 48, 2]
+    },
+    "residence": {
+      "labels": ["Belgium", "Cote D'Ivoire", "Denmark", "Germany", "Italy", "Netherlands", "Switzerland", "United Kingdom", "USA Minor Outlying Islands"],
+      "values": [1, 1, 3, 111, 1, 1, 1, 2, 1]
+    },
+    "program": {
+      "labels": ["Other", "Humanities", "Natural Sciences", "Social Sciences", "Engineering", "Economics"],
+      "values": [7, 3, 26, 56, 7, 20]
+    },
+    "job": {
+      "labels": ["BA", "I have a job.", "I do something else.", "MA", "PhD", "PostDoc"],
+      "values": [26, 25, 4, 43, 21, 1]
+    },
+    "statisticalProgramming": {
+      "labels": ["R", "Excel", "Other", "Stata", "SPSS"],
+      "values": [72, 47, 17, 59, 35]
+    },
+    "programmingLang": {
+      "labels": ["HTML", "CSS", "JavaScript", "Python", "Ruby"],
+      "values": [22, 14, 11, 48, 3]
+    },
+    "OS": {
+      "labels": ["Windows", "Mac OS", "Linux"],
+      "values": [87, 36, 24]
+    }
+  },
+  "de": {
+    "gender": {
+      "labels": ["Männlich", "Weiblich", "Will ich so nicht sagen/definieren."],
+      "values": [66, 48, 2]
+    },
+    "residence": {
+      "labels": ["Belgium", "Cote D'Ivoire", "Denmark", "Germany", "Italy", "Netherlands", "Switzerland", "United Kingdom", "USA Minor Outlying Islands"],
+      "values": [1, 1, 3, 111, 1, 1, 1, 2, 1]
+    },
+    "program": {
+      "labels": ["Andere Studienrichtung", "Geistenwissenschaften", "Naturwissenschaften", "Sozialwissenschaften", "Technik", "Wirtschaft"],
+      "values": [7, 3, 26, 56, 7, 20]
+    },
+    "job": {
+      "labels": ["BA", "Ich bin berufstätig.", "Ich mache etwas anderes.", "MA", "PhD", "PostDoc"],
+      "values": [26, 25, 4, 43, 21, 1]
+    },
+    "statisticalProgramming": {
+      "labels": ["R", "Excel", "Andere", "Stata", "SPSS"],
+      "values": [72, 47, 17, 59, 35]
+    },
+    "programmingLang": {
+      "labels": ["HTML", "CSS", "JavaScript", "Python", "Ruby"],
+      "values": [22, 14, 11, 48, 3]
+    },
+    "OS": {
+      "labels": ["Windows", "Mac OS", "Linux"],
+      "values": [87, 36, 24]
+    }
+  }
+}
