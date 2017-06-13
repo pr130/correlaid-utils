@@ -19,15 +19,15 @@ sink("logs/log_get_new_subs.txt")
 
 # 0.2. define timeframe 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
-# read in the date for which we last checked new subscribers, i.e. the day before the script was last run
-from_day <- as.Date(readLines("aux_data/lastrun"))
+# read in the date for which new subscribers were last included
+from_day <- as.Date(readLines("aux_data/lastincl")) + 1
 
 # we want to include people up to yesterday 
 upto_day <- Sys.Date() - 1
 
-# 0.3. overwrite lastrun
-fileConn<-file("aux_data/lastrun")
-writeLines(as.character(Sys.Date()), fileConn)
+# 0.3. overwrite lastincl
+fileConn<-file("aux_data/lastincl")
+writeLines(as.character(Sys.Date() - 1), fileConn)
 close(fileConn)
 
 # 0.4. delete the old sendto file
