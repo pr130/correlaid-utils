@@ -9,9 +9,9 @@ wd = "/home/fripi/correlaid/correlaid-utils/mailchimp-welcomemail/"
 # read login data into a dictionary
 emaild = {}
 with open(wd + "aux_data/maillogin.txt") as loginfile:
-	for line in loginfile:
-        	(key, val) = line.split(":")
-		emaild[key] = val.strip() # strip possible whitespace
+        for line in loginfile:
+                (key, val) = line.split(":")
+                emaild[key] = val.strip() # strip possible whitespace
 
 # set up server
 server = smtplib.SMTP(emaild['server'], int(emaild['port']))
@@ -32,11 +32,11 @@ outer['To'] = emaild['logrec']
 
 filenames = [wd + "logs/log_send_mails.txt", wd + "logs/log_get_new_subs.txt"]
 for filename in filenames:
-	log = open(filename)
-	msg = MIMEText(log.read())
-	log.close()
-	msg.add_header('Content-Disposition', 'attachment', filename=filename)
-	outer.attach(msg)
+        log = open(filename)
+        msg = MIMEText(log.read())
+        log.close()
+        msg.add_header('Content-Disposition', 'attachment', filename=filename)
+        outer.attach(msg)
 
 composed = outer.as_string()
 

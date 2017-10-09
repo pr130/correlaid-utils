@@ -1,4 +1,4 @@
-# required packages
+#required packages
 library(httr)
 library(purrr)
 library(stringr)
@@ -47,6 +47,8 @@ current <- current[2:nrow(current), ] # delete first row and keep only email and
 
 # empty strings as NA
 current[current == ""] <- NA
+# NA strings as NA
+current[current == "NA"] <- NA
 
 rm(j, js, objs, req, mcurl)
 
@@ -55,6 +57,8 @@ rm(j, js, objs, req, mcurl)
 # export gender
 current$Gender[current$Gender == "männlich"] <- "Männlich"
 current$Gender[current$Gender == "weiblich"] <- "Weiblich"
+current$Gender[current$Gender == "Das möchte ich nicht so einordnen."] <-
+  "Will ich so nicht sagen/definieren"
 
 gender_t <- table(current$Gender[!is.na(current$Gender)])
 gender_de <- list(labels = names(gender_t), values = as.numeric(gender_t))
@@ -144,5 +148,5 @@ writeLines(export, con = "network_data.json", useBytes = T)
 
 # upload
 ftpUpload(what = "network_data.json",
-          to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/network_data.json")
+          to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org/network_data.json")
 

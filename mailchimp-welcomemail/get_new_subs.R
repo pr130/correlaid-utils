@@ -20,14 +20,14 @@ sink("logs/log_get_new_subs.txt")
 # 0.2. define timeframe 
 # we always send the emails in the morning at 5 am for those people who signed up the day before
 # read in the date for which new subscribers were last included
-from_day <- as.Date(readLines("aux_data/lastincl")) + 1
+from_day <- as.Date(readLines("aux_data/lastrun"))
 
 # we want to include people up to yesterday 
 upto_day <- Sys.Date() - 1
 
 # 0.3. overwrite lastincl
-fileConn<-file("aux_data/lastincl")
-writeLines(as.character(Sys.Date() - 1), fileConn)
+fileConn<-file("aux_data/lastrun")
+writeLines(as.character(Sys.Date()), fileConn)
 close(fileConn)
 
 # 0.4. delete the old sendto file
@@ -62,11 +62,12 @@ current <- plyr::ldply(objs)
 colnames(current) <- current[1, ] # first row are column names
 current <- current[2:nrow(current), ] # delete first row and keep only email and first name
 
+# only keep relevant variables
+current <- current[, str_detect(colnames(current), "[Ee]mail|[Vv]orname|CONFIRM_TIME|Kontaktsprache")]
+
 # confirm day as date
 current$confirm_date <- as.Date(current$CONFIRM_TIME)
 
-# only keep relevant variables
-current <- current[, str_detect(colnames(current), "[Ee]mail|[Vv]orname|CONFIRM_TIME|Kontaktsprache")]
 
 # 3. SUBSET FOR NEW SUBSCRIBERS 
 # all accounts with confirm date >= from_day and <= upto_day should be sent an email to

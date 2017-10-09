@@ -37,8 +37,7 @@ for fp in os.listdir(wd):
     if fnmatch.fnmatch(fp, filename):
         filefound = True
         break
-
-if filefound == False:
+if not filefound:
     sys.exit("Current sendto file not found")
 
 # check whether there are new people to send an email to
@@ -60,7 +59,6 @@ with open(wd + "aux_data/maillogin.txt") as loginfile:
     for line in loginfile:
         (key, val) = line.split(":")
         emaild[key] = val.strip()  # strip possible whitespace
-
 # set up server
 server = smtplib.SMTP(emaild['server'], int(emaild['port']))
 
@@ -91,15 +89,17 @@ with open(wd + filename, "r") as newfile, open(wd + "sent_total.csv", "a+") as a
     for row in reader:
         print(row[2])
         if row[2] == "Englisch":
-            msg = MIMEText(htmltext_en, 'html', 'utf-8')
+            # msg = MIMEText(htmltext_en, 'html', 'utf-8')
             per_text = htmltext_en.replace('FIRSTNAME', row[1])
             msg = MIMEText(per_text, 'html', 'utf-8')
             msg['Subject'] = "Welcome to CorrelAid"
         elif row[2] == "Deutsch":
-            msg = MIMEText(htmltext_en, 'html', 'utf-8')
+            # msg = MIMEText(htmltext_de, 'html', 'utf-8')
             per_text = htmltext_de.replace('FIRSTNAME', row[1])
             msg = MIMEText(per_text, 'html', 'utf-8')
             msg['Subject'] = "Willkommen bei CorrelAid"
+        else: 
+            continue
 
         msg['From'] = emaild['from']
         msg['To'] = row[0]
