@@ -17,6 +17,11 @@ if(Sys.info()[["user"]] == "frie"){
   setwd("/home/fripi/correlaid/correlaid-utils/correlaid-analytics")
 }
 
+# mlab api key
+apikey <- readLines("aux_data/mlabapi.txt")
+baseurl <- "https://api.mlab.com/"
+
+
 # 1. TWITTER
 # 1.2. get data
 creds <- read.csv("aux_data/twitter_credentials", stringsAsFactors = F)
@@ -36,12 +41,21 @@ load("twitter_data/twitter_daily.rda")
 twitter <- rbind(twitter, c(as.character(Sys.Date()), fc))
 twitter <- unique(twitter)
 
+# newest entry to  mlab
+tw_today <- twitter %>%
+filter(x == max(x))
+tw_today <- jsonlite::toJSON(tw_today)
+POST(modify_url(baseurl, path = "api/1/databases/correlaid-data/collections/twitter", 
+query = list(apiKey = apikey)), body = tw_today, content_type_json())
+
+
 # save r file
 save(twitter, file = "twitter_data/twitter_daily.rda")
 
 # save json
 json <- jsonlite::toJSON(twitter)
 write(json, file = "twitter_data/twitter_daily.json")
+
 
 # 2. NEWSLETTER
 # 2.0. read in existing data
@@ -83,6 +97,14 @@ sc <- nrow(current)
 # add to old newsletter data
 newsletter <- rbind(newsletter, c(as.character(Sys.Date()), sc))
 newsletter <- unique(newsletter)
+
+# newest entry to  mlab
+nl_today <- newsletter %>%
+filter(x == max(x))
+nl_today <- jsonlite::toJSON(nl_today)
+POST(modify_url(baseurl, path = "api/1/databases/correlaid-data/collections/newsletter", 
+query = list(apiKey = apikey)), body = nl_today, content_type_json())
+
 
 # write to file
 save(newsletter, file = "newsletter_data/newsletter_daily.rda")
@@ -152,6 +174,14 @@ facebook <- unique(facebook)
 # write to file
 save(facebook, file = "facebook_data/facebook_daily.rda")
 
+# newest entry to  mlab
+fb_today <- facebook %>%
+filter(x == max(x))
+fb_today <- jsonlite::toJSON(fb_today)
+POST(modify_url(baseurl, path = "api/1/databases/correlaid-data/collections/facebook", 
+	query = list(apiKey = apikey)), body = fb_today, content_type_json())
+
+
 json <- jsonlite::toJSON(facebook)
 write(json, file = "facebook_data/facebook_daily.json")
 
@@ -159,8 +189,8 @@ write(json, file = "facebook_data/facebook_daily.json")
 # read in days 
 dates <- seq(from = as.Date("2016-02-29"), Sys.Date(), by = "weeks")
 
-# check whether today is a relevant week day
-if ((max(dates) + 7) == Sys.Date()){
+# check whether today is a Monday
+if (format(Sys.Date(), "%w") == "1"){
   # add todays date
   dates <- c(dates, Sys.Date())
 
@@ -191,7 +221,7 @@ if ((max(dates) + 7) == Sys.Date()){
   # upload to server
   
   ftpUpload(what = "all_weekly.json",
-            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org:21/all_weekly.json")
+            to = "ftp://gsi_7309_1data:hqjjqOcVOIV7_@correlaid.org/all_weekly.json")
   
   
   }
