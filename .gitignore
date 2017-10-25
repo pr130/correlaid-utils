@@ -23,3 +23,4 @@ mailchimp-welcomemail/sendto_*
 mailchimp-welcomemail/logs/log_get_new_subs.txt
 mailchimp-welcomemail/logs/log_send_mails.txt
 
+.Rproj.user
