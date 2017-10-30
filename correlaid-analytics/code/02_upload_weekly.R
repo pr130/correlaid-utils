@@ -50,7 +50,7 @@ all <- all %>%
   mutate_at(vars(facebook, twitter, newsletter), funs(as.numeric)) %>% 
   mutate(days = format(as.Date(all$date), format="%b %d, %Y"))
 
-json <- jsonlite::toJSON(all %>% select(-date))
+json <- jsonlite::toJSON(as.list(all %>% select(-date)))
 writeBin(charToRaw(json), con = "data/all_weekly.json", endian = "little")
 
 # upload to server
