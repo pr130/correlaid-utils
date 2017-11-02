@@ -39,7 +39,6 @@ fc <- followersCount(correlaid)
 
 # convert and upload to mlab
 tw_today <- data_frame(x = as.character(Sys.Date()), y = fc)
-tw_today <- jsonlite::toJSON(tw_today)
 mlab_tw$insert(tw_today)
 
 # NEWSLETTER -------------------------------------------------------------------
@@ -73,7 +72,6 @@ sc <- nrow(current)
 
 # newest entry to  mlab
 nl_today <- data_frame(x = as.character(Sys.Date()), y = sc)
-nl_today <- jsonlite::toJSON(nl_today)
 
 mlab_nl$insert(nl_today)
 
@@ -87,9 +85,9 @@ fb_creds <- read_csv("data/aux_data/facebook_credentials")
 
 # authentification was done following http://thinktostart.com/analyzing-facebook-with-r/
 # uncomment to execute only once every two months (that's how long the token is valid)
-fb_oauth <- fbOAuth(app_id = fb_creds$appid, app_secret = fb_creds$appsecret, 
-                    scope = "manage_pages")
-save(fb_oauth, file = "data/aux_data/fb_oauth")
+#fb_oauth <- fbOAuth(app_id = fb_creds$appid, app_secret = fb_creds$appsecret, 
+#                    scope = "manage_pages")
+#save(fb_oauth, file = "data/aux_data/fb_oauth")
 load("data/aux_data/fb_oauth")
 
 
@@ -136,8 +134,6 @@ facebook_new$end_time <- NULL
 fb_today <- facebook_new %>% 
   select(x = date, y = value) %>% 
   filter(x == Sys.Date())
-
-fb_today <- jsonlite::toJSON(fb_today)
 
 mlab_fb$insert(fb_today)
 
