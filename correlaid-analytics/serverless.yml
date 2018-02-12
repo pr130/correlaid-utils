@@ -44,9 +44,17 @@ provider:
     DB_DB: ${file(./env.yml):prod.DB_DB}
     DB_HOST: ${file(./env.yml):prod.DB_HOST}
     DB_USER: ${file(./env.yml):prod.DB_USER}
+    FTP_SERVER: ${file(./env.yml):prod.FTP_SERVER}
+    FTP_USER: ${file(./env.yml):prod.FTP_USER}
+    FTP_PW: ${file(./env.yml):prod.FTP_PW}
 functions:
   daily_correlaid_analytics:
     handler: daily.get_correlaid_data
     events:
       - schedule:
-          rate: cron(57 23 * * * *)
+          rate: cron(56 22 * * ? *)
+  weekly_upload:
+    handler: every_monday.upload_to_ftp
+    events:
+      - schedule:
+          rate: cron(02 00 ? * TUE *)

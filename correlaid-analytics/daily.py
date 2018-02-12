@@ -1,13 +1,12 @@
 import tweepy
 import facebook
 from mailchimp3 import MailChimp
-import MySQLdb
 from datetime import date
 import os 
 import pymysql.cursors
 import pymysql
 
-def get_correlaid_data():
+def get_correlaid_data(event, context):
     data = {}
 
     # collect from social media
@@ -19,12 +18,11 @@ def get_correlaid_data():
     today = date.today()
     data['day_of_week'] = today.weekday() # monday is zero
     data['date'] = str(today)
-    print(data)
 
     # connect to database 
-    conn = MySQLdb.connect(host = os.environ['DB_HOST'], 
+    conn = pymysql.connect(host = os.environ['DB_HOST'], 
                             user = os.environ['DB_USER'],
-                            passwd = os.environ['DB_PWD'], 
+                            password = os.environ['DB_PWD'], 
                             db = os.environ['DB_DB'])
     cursor = conn.cursor()
 
@@ -33,21 +31,18 @@ def get_correlaid_data():
     # !! do NOT re-execute/uncomment this !!
     # create_table()
 
-    insert_data(cursor, data)
-
-    """
-    # fetch data 
     cursor.execute(
-        SELECT * FROM correlaid_data
-    )
-
-    r = cursor.fetchall() 
-    print(r)
     """
+    INSERT INTO correlaid_data (date, day_of_week, facebook_likes, twitter_follower, newsletter_subs)
+    VALUES (%s, %s, %s, %s, %s)
+    """, (data['date'], data['day_of_week'], data['facebook_likes'], data['twitter_follower'], data['newsletter_subs']))
+
     cursor.close()
-    # close database connection
+    # commit and close database connection
     conn.commit()
     conn.close()
+
+    return build_success_response("Success.")
 
 def create_table(cursor):
     """
@@ -66,12 +61,6 @@ def create_table(cursor):
         """
     )
 
-def insert_data(cursor, data):
-   cursor.execute(
-       """
-        INSERT INTO correlaid_data (date, day_of_week, facebook_likes, twitter_follower, newsletter_subs)
-        VALUES (%s, %s, %s, %s, %s)
-       """, (data['date'], data['day_of_week'], data['facebook_likes'], data['twitter_follower'], data['newsletter_subs']))
 
 def get_twitter_follower_count():
     consumer_key = os.environ['TWITTER_CONSUMER_KEY']
@@ -118,3 +107,12 @@ def get_newsletter_subs():
         newsletter_subs = None
         pass
     return newsletter_subs
+
+
+def build_success_response(string):
+    # default response 
+    response = {
+        "statusCode": 200,
+        "body": string
+    }
+    return response 
