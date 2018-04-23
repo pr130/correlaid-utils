@@ -7,7 +7,7 @@ import ftplib
 
 def upload_to_ftp(event, context):
 
-    connect to database 
+    # connect to database 
     conn = pymysql.connect(host = os.environ['DB_HOST'], 
                              user = os.environ['DB_USER'],
                              password = os.environ['DB_PWD'], 

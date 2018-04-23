@@ -22,7 +22,7 @@ plugins:
 
 custom:
   pythonRequirements:
-    dockerizePip: non-linux
+    dockerizePip: false
 
 provider:
   name: aws
@@ -57,4 +57,4 @@ functions:
     handler: every_monday.upload_to_ftp
     events:
       - schedule:
-          rate: cron(02 00 ? * TUE *)
+          rate: cron(05 00 ? * TUE *)
