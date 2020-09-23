@@ -1,6 +1,9 @@
 # correlaid-utils
 This repository contains utility tools for CorrelAid.
 
+:warning: this repository is very outdated! I (https://github.com/friep) do not maintain this code. I solely open sourced this repository for the purpose of my talk at the [Open Online Data Meetup](https://www.eventbrite.com/e/the-lazy-data-scientist-automating-things-feat-r-python-aws-and-a-pi-registration-121498787143). :warning: 
+
+
 ## mailchimp-welcomemail
 This folder contains the code to automatically send out the welcome email to new subscribers to our newsletter once a day. 
 
