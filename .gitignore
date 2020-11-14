@@ -31,3 +31,6 @@ correlaid-analytics/env.yml
 correlaid-analytics/.slackr
 correlaid-analytics/.Renviron
 
+
+# DS_Store
+.DS_Store
