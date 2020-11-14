@@ -30,7 +30,11 @@ correlaid-analytics/env.yml
 # renviron and slackr
 correlaid-analytics/.slackr
 correlaid-analytics/.Renviron
+correlaid-analytics/.rtweet_token.rds
 
+.rtweet_token.rds
+.Renviron
+.slackr
 
 # DS_Store
 .DS_Store
