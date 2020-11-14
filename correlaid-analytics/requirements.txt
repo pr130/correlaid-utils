@@ -1,4 +1,0 @@
-tweepy
-facebook-sdk
-mailchimp3
-pymysql
