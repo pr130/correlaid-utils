@@ -22,7 +22,13 @@ The scripts are in the order they are executed by runscripts.sh:
 Code to get twitter follower, facebook likes, newsletter subscriber count and general network data on a daily basis using [{smcounts}](https://github.com/friep/smcounts). 
 
 ### Deployment on Raspberry Pi
-- install [{smcounts}](https://github.com/friep/smcounts) and its dependencies
-- install `cronR`
-- copy `.Renviron` with all necessary environment variables to Raspberry Pi 
-- run `cron.R` to set up cron job.
+```
+install.packages("bspm")
+bspm::enable()
+install.packages("remotes")
+install.packages("cronR")
+```
+
+1. install [{smcounts}](https://github.com/friep/smcounts) and its dependencies
+2. copy `.Renviron` with all necessary environment variables to Raspberry Pi. Copy `rtweet_token.rds` and `.slackr` as well.
+3. run `cron.R` to set up cron job.
