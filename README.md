@@ -1,7 +1,8 @@
 # correlaid-utils
 This repository contains utility tools for CorrelAid.
 
-:warning: This repository is very outdated! Code was developed by [Frie](https://github.com/friep) back in 2017 but has not been actively used / maintained since 2018. The repository was solely open sourced for the purpose of Frie's talk at the [Open Online Data Meetup](https://www.eventbrite.com/e/the-lazy-data-scientist-automating-things-feat-r-python-aws-and-a-pi-registration-121498787143). :warning: 
+:warning: Code in mailchimp-welcomemail is very outdated! Code was developed by [Frie](https://github.com/friep) back in 2017 but has not been actively used / maintained since 2018. The repository was solely open sourced for the purpose of Frie's talk at the [Open Online Data Meetup](https://www.eventbrite.com/e/the-lazy-data-scientist-automating-things-feat-r-python-aws-and-a-pi-registration-121498787143). Code in `correlaid-analytics` has been updated for another upcoming talk in November 2020 but please still proceed with caution :warning: 
+
 
 ## mailchimp-welcomemail
 This folder contains the code to automatically send out the welcome email to new subscribers to our newsletter once a day. 
@@ -15,4 +16,10 @@ The scripts are in the order they are executed by runscripts.sh:
 3. send_logs.py: send log files to @friep's correlaid address.
 
 ## correlaid-analytics
-Code to get twitter follower, facebook likes, newsletter subscriber count and general network data on a daily basis. Data from Mondays are uploaded to the FTP Server of the website in order to be visualised. Daily data are uploaded each day to a MongoDB hosted on mlab.com.
+Code to get twitter follower, facebook likes, newsletter subscriber count and general network data on a daily basis using [{smcounts}](https://github.com/friep/smcounts). 
+
+### Deployment on Raspberry Pi
+- install [{smcounts}](https://github.com/friep/smcounts) and its dependencies
+- install `cronR`
+- copy `.Renviron` with all necessary environment variables to Raspberry Pi 
+- run `cron.R` to set up cron job.
