@@ -3,6 +3,9 @@ This repository contains utility tools for CorrelAid.
 
 :warning: Code in mailchimp-welcomemail is very outdated! Code was developed by [Frie](https://github.com/friep) back in 2017 but has not been actively used / maintained since 2018. The repository was solely open sourced for the purpose of Frie's talk at the [Open Online Data Meetup](https://www.eventbrite.com/e/the-lazy-data-scientist-automating-things-feat-r-python-aws-and-a-pi-registration-121498787143). Code in `correlaid-analytics` has been updated for another upcoming talk in November 2020 but please still proceed with caution :warning: 
 
+Relevant older versions of this repository: 
+- [correlaid-analytics Python / Serverless version](https://github.com/friep/correlaid-utils/releases/tag/serverless-python)
+- [correlaid-analytics old R version](https://github.com/friep/correlaid-utils/releases/tag/rstats-old)
 
 ## mailchimp-welcomemail
 This folder contains the code to automatically send out the welcome email to new subscribers to our newsletter once a day. 
