@@ -25,3 +25,4 @@ mailchimp-welcomemail/logs/log_send_mails.txt
 
 .Rproj.user
 correlaid-analytics/env.yml
+.Rhistory
