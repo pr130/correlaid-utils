@@ -23,3 +23,4 @@ today_list <- jsonlite::read_json(path) # read back in to get list (too lazy to 
 all_days <- jsonlite::read_json("correlaid-analytics/data/all_daily.json")
 new_list <- c(all_days, today_list)
 new_list %>% jsonlite::write_json("correlaid-analytics/data/all_daily.json")
+
