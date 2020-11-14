@@ -10,9 +10,8 @@ today <- Sys.Date()
 
 # nonstandard path of slackr file - skip and execute manually
 today_df <- smcounts::collect_data(slack = FALSE) 
-cnt <- smcounts::ca_slack(here::here("correlaid-analytics/.slackr"))
-today_df <- today_df %>% 
-  add_row(n = cnt, platform = "slack", date = today)
+slack <- smcounts::ca_slack(here::here("correlaid-analytics/.slackr"))
+today_df <- rbind(today_df, slack)
 
 # write daily json
 path <- glue::glue(here::here("correlaid-analytics/data/days/{today}.json"))
