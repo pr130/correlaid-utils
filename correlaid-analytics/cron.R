@@ -1,6 +1,6 @@
 library(cronR)
 # RUN ONCE TO CONFIGURE CRONJOB
-f <- normalizePath("01_get_daily_analytics.R")
+f <- normalizePath("run.R")
 f
 cmd <- cron_rscript(f)
 cmd
