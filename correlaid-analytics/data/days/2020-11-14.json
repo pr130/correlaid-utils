@@ -1,1 +1,17 @@
-[{"platform":"facebook","n":1191,"date":"2020-11-14"},{"platform":"newsletter","n":1519,"date":"2020-11-14"},{"platform":"slack","n":854,"date":"2020-11-14"}]
+[
+  {
+    "platform": "facebook",
+    "n": 1191,
+    "date": "2020-11-14"
+  },
+  {
+    "platform": "newsletter",
+    "n": 1519,
+    "date": "2020-11-14"
+  },
+  {
+    "platform": "slack",
+    "n": 854,
+    "date": "2020-11-14"
+  }
+]

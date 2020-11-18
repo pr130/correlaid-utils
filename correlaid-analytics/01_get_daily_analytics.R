@@ -14,11 +14,11 @@ slack <- smcounts::ca_slack(here::here("correlaid-analytics/.slackr"))
 today_df <- rbind(today_df, slack)
 
 # write daily json
-path <- glue::glue(here::here("correlaid-analytics/data/days/{today}.json"))
+path <- glue::glue(here::here("correlaid-analytics/data/days/{today}.json"), simplifyVector = TRUE, pretty = TRUE)
 today_df %>% jsonlite::write_json(path)
 today_list <- jsonlite::read_json(path) # read back in to get list (too lazy to manually transform)
 
 # load all daily data and append new data
-all_days <- jsonlite::read_json(here::here("correlaid-analytics/data/all_daily.json"))
+all_days <- jsonlite::read_json(here::here("correlaid-analytics/data/all_daily.json"), simplifyVector = TRUE)
 new_list <- c(all_days, today_list)
-new_list %>% jsonlite::write_json(here::here("correlaid-analytics/data/all_daily.json"))
+new_list %>% jsonlite::write_json(here::here("correlaid-analytics/data/all_daily.json"), simplifyVector = TRUE, pretty = TRUE)
