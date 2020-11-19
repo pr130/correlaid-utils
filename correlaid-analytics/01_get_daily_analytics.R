@@ -6,6 +6,7 @@ library(tibble)
 library(dplyr)
 
 # read renviron file
+print("COLLECTING DATA")
 readRenviron(here::here("correlaid-analytics/.Renviron"))
 today <- Sys.Date()
 
@@ -13,7 +14,9 @@ today <- Sys.Date()
 today_df <- smcounts::collect_data(slack = FALSE) 
 slack <- smcounts::ca_slack(here::here("correlaid-analytics/.slackr"))
 today_df <- rbind(today_df, slack)
+print(today_df)
 
+print("LOADING EXISTING DATA AND APPENDING NEW DATA")
 # load all daily data and append new data
 all_days <- readr::read_csv(here::here("correlaid-analytics/data/all_daily.csv"))
 
