@@ -1,5 +1,6 @@
 # gert (https://docs.ropensci.org/gert/index.html)
 gert::git_pull()
+print(gert::git_status())
 gert::git_add(here::here("correlaid-analytics/data/"))
-gert::git_commit(message = "🤖 CRON - update daily data")
+gert::git_commit(files, message = "🤖 CRON - update daily data")
 gert::git_push()
