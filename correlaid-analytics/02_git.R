@@ -1,5 +1,5 @@
-# git2r
-git2r::pull()
-git2r::add(path = here::here("correlaid-analytics/data/"))
-git2r::commit(message = "CRON - update daily data")
-git2r::push()
+# gert (https://docs.ropensci.org/gert/index.html)
+gert::git_pull()
+gert::git_add(path = here::here("correlaid-analytics/data/"))
+gert::git_commit(message = "🤖 CRON - update daily data")
+gert::git_push()
