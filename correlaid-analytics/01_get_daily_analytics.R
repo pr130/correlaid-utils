@@ -3,6 +3,7 @@
 ################################################################################
 library(smcounts)
 library(tibble)
+library(dplyr)
 
 # read renviron file
 readRenviron(here::here("correlaid-analytics/.Renviron"))
@@ -13,12 +14,14 @@ today_df <- smcounts::collect_data(slack = FALSE)
 slack <- smcounts::ca_slack(here::here("correlaid-analytics/.slackr"))
 today_df <- rbind(today_df, slack)
 
-# write daily json
-path <- glue::glue(here::here("correlaid-analytics/data/days/{today}.json"))
-today_df %>% jsonlite::write_json(path, auto_unbox = TRUE, pretty = TRUE)
-today_list <- jsonlite::read_json(path) # read back in to get list (too lazy to manually transform)
-
 # load all daily data and append new data
-all_days <- jsonlite::read_json(here::here("correlaid-analytics/data/all_daily.json"))
-new_list <- c(all_days, today_list)
-new_list %>% jsonlite::write_json(here::here("correlaid-analytics/data/all_daily.json"), auto_unbox = TRUE, pretty = TRUE)
+all_days <- readr::read_csv(here::here("correlaid-analytics/data/all_daily.csv"))
+
+# make sure there are no existing data for this date, drop them if we do
+# this is mostly relevant when actively developing and executing the script multiple times per day by hand - but 
+# it's always good to be sure ;)
+all_days <- all_days %>% 
+  filter(date != today)
+# add new data 
+new_df <- rbind(all_days, today_df)
+new_df %>% readr::write_csv(here::here("correlaid-analytics/data/all_daily.csv"))
