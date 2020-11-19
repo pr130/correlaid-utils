@@ -27,8 +27,10 @@ install.packages("bspm")
 bspm::enable()
 install.packages("remotes")
 install.packages("cronR")
+install.packages("gert") # requires libssl-dev and libgit2-dev (install with sudo apt install)
 ```
 
 1. install [{smcounts}](https://github.com/friep/smcounts) and its dependencies
 2. copy `.Renviron` with all necessary environment variables to Raspberry Pi. Copy `rtweet_token.rds` and `.slackr` as well.
 3. run `cron.R` to set up cron job.
+4. add a `GITHUB_PAT` (GitHub Personal Access Token) to `.Renviron`. This is needed for the authentication with GitHub.
