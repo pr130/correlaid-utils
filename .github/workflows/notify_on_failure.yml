@@ -28,7 +28,7 @@ jobs:
         run: |
           time_since=$(date --iso-8601=seconds --date='1 days ago')
           ncommits=$(curl -sL "https://api.github.com/repos/friep/correlaid-utils/commits?author=raspi3@frie.codes&path=correlaid-analytics/data/all_daily.csv&since=$time_since" | jq '. | length')
-          "::set-output name=NCOMMITS::$ncommits"
+          Write-Output "::set-output name=NCOMMITS::$ncommits"
 
       - name: fail if no commit 
         if: ${{ steps.get-commits.output.NCOMMITS == 0 }} 
