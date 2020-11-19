@@ -1,6 +1,7 @@
 # gert (https://docs.ropensci.org/gert/index.html)
+library(gert)
 gert::git_pull()
 print(gert::git_status())
 gert::git_add("correlaid-analytics/data/all_daily.csv")
-gert::git_commit(message = "🤖 CRON - update daily data", author = git_signature("Raspberry Pi", "raspi3@frie.codes"))
+gert::git_commit(message = "🤖 CRON - update daily data", author = git_signature("raspi3", "raspi3@frie.codes"))
 gert::git_push()
