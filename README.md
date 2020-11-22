@@ -11,6 +11,12 @@ Relevant older versions of this repository:
 ## correlaid-analytics
 Code to get twitter follower, facebook likes, newsletter subscriber count and general network data on a daily basis using [{smcounts}](https://github.com/friep/smcounts). 
 
+### Read the data 
+
+```r
+ca_counts <- readr::read_csv("https://raw.githubusercontent.com/friep/correlaid-utils/main/correlaid-analytics/data/all_daily.csv")
+```
+
 ### Deployment on Raspberry Pi
 ```
 install.packages("bspm")
@@ -26,6 +32,8 @@ install.packages("gert") # requires libssl-dev and libgit2-dev (install with sud
 4. Run `cron.R` to set up cron job: `Rscript path/to/cron.R`. Check with `crontab -l`
 5. add a `GITHUB_PAT` (GitHub Personal Access Token) to `.Renviron`. This is needed for the authentication with GitHub.
 
+### GitHub Action
+Every morning at 7am, GitHub Actions run to see whether a commit was made to the `all_daily.csv` file. If not, then the build fails and I'll get notified via email about the failed pipeline. 
 
 ## mailchimp-welcomemail (not in use anymore)
 This folder contains the code to automatically send out the welcome email to new subscribers to our newsletter once a day. 
