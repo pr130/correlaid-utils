@@ -27,7 +27,7 @@ _last updated_: `r Sys.time()`
 ```{r plot-alltime, echo=FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
-data <- readr::read_csv("correlaid-analytics/data/all_daily.csv")
+data <- readr::read_csv(here::here("correlaid-analytics/data/all_daily.csv"))
 ggplot(data = data) +
   geom_point(aes(x = date, y = n, color = platform,
   tooltip = n, data_id = date), size = 0.5)+
