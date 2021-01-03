@@ -25,8 +25,8 @@ count and general network data on a daily basis using
 
 ### Plots
 
-*last updated*: 2021-01-02
-23:50:14
+*last updated*: 2021-01-03
+23:50:13
 
 ![](README_files/figure-gfm/plot-alltime-1.png)<!-- -->
 
