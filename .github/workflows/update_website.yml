@@ -1,6 +1,6 @@
 # Fails if no commit from the raspberry pi has been registered in 24 hours
 
-name: fail-if-no-commit
+name: update-website
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
