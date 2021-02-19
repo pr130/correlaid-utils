@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "CorrelAid Social Media Stats"
 output: 
   html_document:
     theme: yeti
@@ -14,6 +14,8 @@ library(apexcharter)
 _last updated_: `r Sys.time()`
 
 **Loading the plots can take a couple of seconds. Please be patient and do not refresh!**
+
+Plots are created with [apexcharter](https://github.com/dreamRs/apexcharter).
 
 ### All time 
 
