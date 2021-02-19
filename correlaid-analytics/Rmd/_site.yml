@@ -1,0 +1,11 @@
+name: "CorrelAid Stats"
+output_dir: "../../docs"
+navbar:
+  logo:
+    image: correlaid.png
+  title: "CorrelAid Social Media Stats"
+  right:
+    - icon: fab fa-twitter fa-lg
+      href: https://twitter.com/ameisen_strasse
+    - icon: fab fa-github  fa-lg
+      href: http://github.com/friep/correlaid-utils/
