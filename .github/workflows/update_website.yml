@@ -9,6 +9,7 @@ on:
       # * is a special character in YAML so you have to quote this string
     branches: 
       - "main"
+      - "website"
     paths: 
       - "data/"
       - "correlaid-analytics/Rmd/"

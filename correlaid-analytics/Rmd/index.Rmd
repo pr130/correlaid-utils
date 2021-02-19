@@ -13,6 +13,8 @@ library(apexcharter)
 
 _last updated_: `r Sys.time()`
 
+**Loading the plots can take a couple of seconds. Please be patient and do not refresh!**
+
 ### All time 
 
 ```{r data-cleaning, echo=FALSE, warning=FALSE, message=FALSE}
