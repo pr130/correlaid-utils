@@ -9,13 +9,9 @@ on:
       # * is a special character in YAML so you have to quote this string
     branches: 
       - "main"
-      - "website"
     paths: 
       - "data/"
       - "correlaid-analytics/Rmd/"
-  pull_request:
-    branches: 
-      - "main"
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
