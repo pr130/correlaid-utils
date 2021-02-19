@@ -21,29 +21,8 @@ Relevant older versions of this repository:
 Code to get twitter follower, facebook likes, newsletter subscriber count and general network data on a daily basis using [{smcounts}](https://github.com/friep/smcounts). 
 
 ### Plots
-_last updated_: `r Sys.time()`
+Check out [the small Github page](https://friep.github.io/correlaid-utils) for some plots. :) 
 
-
-```{r plot-alltime, echo=FALSE, message=FALSE}
-library(ggplot2)
-library(dplyr)
-data <- readr::read_csv(here::here("correlaid-analytics/data/all_daily.csv"))
-ggplot(data = data) +
-  geom_point(aes(x = date, y = n, color = platform), size = 0.5)+
-  labs(title = "CorrelAid platforms over time", caption = "No data was collected between end of 2017 and autumn 2020", x = "")+
-  theme_minimal()
-```
-
-
-```{r plot2020, echo=FALSE, message=FALSE}
-ggplot(data = data %>% dplyr::filter(date > "2020-01-01")) +
-    geom_point(aes(x = date, y = n, color = platform), size = 0.5) +
-  geom_line(aes(x = date, y = n, color = platform))+
-  facet_wrap(~platform, ncol = 2, scales = "free_y")+
-  labs(title = "CorrelAid platforms over time", subtitle = "Only 2020 onwards, free y axes", x = "")+
-  theme_minimal()
-
-```
 
 ### Read the data 
 

@@ -1,0 +1,58 @@
+---
+title: ""
+output: 
+  html_document:
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(apexcharter)
+```
+
+_last updated_: `r Sys.time()`
+
+**Loading the plots can take a couple of seconds. Please be patient and do not refresh!**
+
+### All time 
+
+```{r data-cleaning, echo=FALSE, warning=FALSE, message=FALSE}
+
+data_raw <- read.csv("../../correlaid-analytics/data/all_daily.csv")
+data_raw$date <- as.Date(data_raw$date)
+
+# clean out facebook outliers /errors
+data_raw <- data_raw %>% 
+  filter(!(platform == "facebook" & date > "2020-01-01" & n < 10))
+
+
+# complete the data - i don't know how to do this tidyverse style
+# Why? -> cf. https://gist.github.com/friep/5959d2b141f3682f249c0289ee045a8c
+# baseR
+tmp <- expand.grid(date = seq(min(data_raw$date), max(data_raw$date), 1), platform = unique(data_raw$platform))
+data_base <- full_join(tmp, data_raw)
+
+```
+
+
+```{r plot-alltime2, echo=FALSE, warning=FALSE, message=FALSE}
+apex(data = data_base, type = "line",  mapping = aes(fill = platform, y = n, x = date)) %>% 
+  ax_tooltip(shared = TRUE, x = list(format = "dd MMM yyyy")) %>% 
+  ax_markers() %>% 
+  ax_colors("#3863a2", "#96c342", "#f04451",
+            "#3c3c3b")
+```
+
+### November 2020 onwards 
+**Note**: axes are free. 
+
+```{r plot2020, echo=FALSE, warning=FALSE, message=FALSE}
+apex(data = data_base %>% filter(date > "2020-11-01"), type = "line",  mapping = aes(y = n, x = date, label = platform), synchronize = "id") %>% 
+  ax_stroke(color = "#000000") %>% 
+  ax_markers(colors = "#000000") %>% 
+  ax_facet_wrap(vars(platform), ncol = 2, scales = "free") %>% 
+  ax_tooltip(z = list(title = "platform: "), y = list(title = "n: "), x = list(format = "dd MMM yyyy"))
+```
+
+

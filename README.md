@@ -3,7 +3,7 @@ correlaid-utils
 
 This repository contains utility tools for CorrelAid.
 
-:warning: Code in mailchimp-welcomemail is very outdated\! Code was
+:warning: Code in mailchimp-welcomemail is very outdated! Code was
 developed by [Frie](https://github.com/friep) back in 2017 but has not
 been actively used / maintained since 2018. The repository was solely
 open sourced for the purpose of Frie’s talk at the [Open Online Data
@@ -25,12 +25,8 @@ count and general network data on a daily basis using
 
 ### Plots
 
-*last updated*: 2021-02-18
-23:50:19
-
-![](README_files/figure-gfm/plot-alltime-1.png)<!-- -->
-
-![](README_files/figure-gfm/plot2020-1.png)<!-- -->
+Check out [the small Github
+page](https://friep.github.io/correlaid-utils) for some plots. :)
 
 ### Read the data
 
@@ -64,7 +60,7 @@ Every morning at 7am, GitHub Actions run to see whether a commit was
 made to the `all_daily.csv` file. If not, then the build fails and I’ll
 get notified via email about the failed pipeline.
 
-## mailchimp-welcomemail (:warning: deprecated\!)
+## mailchimp-welcomemail (:warning: deprecated!)
 
 This folder contains the code to automatically send out the welcome
 email to new subscribers to our newsletter once a day.
