@@ -11,7 +11,7 @@ readRenviron(here::here("correlaid-analytics/.Renviron"))
 today <- Sys.Date()
 
 # nonstandard path of slackr file - skip and execute manually
-today_df <- smcounts::collect_data() 
+today_df <- smcounts::collect_data(facebook = FALSE) 
 print(today_df)
 
 print("LOADING EXISTING DATA AND APPENDING NEW DATA")
